@@ -23,7 +23,16 @@ Notes.NotesNoteRoute = Ember.Route.extend({
 /** Ember Data **/
 Notes.Note = DS.Model.extend({
     name: DS.attr('string'),
-    value: DS.attr('string')
+    value: DS.attr('string'),
+
+    /** computed property */
+    intro: function() {
+        var intro = '';
+        if (this.get('value')) {
+            intro = this.get('value').substring(0, 15) + '...';
+        }
+        return intro;
+    }.property('value')
 });
 
 Notes.Store = DS.Store.extend({
@@ -87,11 +96,16 @@ Notes.NotesController = Ember.ArrayController.extend({
 
 Notes.NotesNoteController = Ember.ObjectController.extend({
     actions: {
-        updateNote: function() {
-            var content = this.get('content');
-            console.log(content);
+        updateNote: function(note) {
+            var noteName = this.get('name');
+            var content = this.get('value');
+            console.log('Note name: ' + noteName);
+            console.log('Note content: ' + content);
+            console.log(this instanceof Notes.NotesNoteController);
+            console.log(note instanceof Notes.Note);
             if (content) {
-                content.save();
+                this.set('name', noteName);
+                this.set('value', content);
             }
         }
     }
