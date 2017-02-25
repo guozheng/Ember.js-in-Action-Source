@@ -103,9 +103,12 @@ Notes.NotesNoteController = Ember.ObjectController.extend({
             console.log('Note content: ' + content);
             console.log(this instanceof Notes.NotesNoteController);
             console.log(note instanceof Notes.Note);
+            console.log('before: ' + note.get('name') + ', ' + note.get('value'));
             if (content) {
-                this.set('name', noteName);
-                this.set('value', content);
+                console.log('saving...');
+                var targetNote = note.store.find('id', noteName);
+                targetNote.set('value', content);
+                console.log('after: ' + note.get('name') + ', ' + note.get('value'));
             }
         }
     }
